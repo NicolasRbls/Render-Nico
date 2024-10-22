@@ -7,10 +7,23 @@ import re
 from collections import Counter
 
 # Connexion à MongoDB
-client = MongoClient("mongodb+srv://nicolas:cc5sYdkPWGpV81ep@cluster0.qx6hg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+# Récupérer l'URI MongoDB depuis la variable d'environnement
+mongodb_uri = os.getenv('MONGODB_URI')
+
+# Connexion à MongoDB
+client = MongoClient(mongodb_uri)
 db = client['crawler_db']
 collection = db['crawled_urls']
 
+# Test de connexion à MongoDB
+try:
+    client.admin.command('ping')
+    print("Connexion à MongoDB réussie")
+except Exception as e:
+    print(f"Erreur de connexion à MongoDB : {e}")
+    exit(1)
+
+    
 # Fonction pour récupérer des URLs dynamiques en fonction du thème
 def get_dynamic_urls(theme):
     search_url = f"https://www.bing.com/news/search?q={urllib.parse.quote(theme)}"
