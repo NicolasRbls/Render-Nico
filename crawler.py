@@ -138,4 +138,4 @@ def crawl_with_theme(theme, depth):
 
 # Exécuter le crawler avec un thème et une profondeur
 theme = "football"
-crawl_with_theme(theme, depth=2)
+crawl_with_theme(theme, depth=30)

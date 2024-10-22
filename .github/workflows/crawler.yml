@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/1 * * * *'  # Cette ligne permet d'exécuter le workflow toutes les minutes
+      - cron: '0 */5 * * *'  # Cette ligne permet d'exécuter le workflow toutes les 5 heures
 
 jobs:
   run-crawler:
