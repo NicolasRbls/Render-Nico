@@ -10,6 +10,10 @@ from collections import Counter
 # Récupérer l'URI MongoDB depuis la variable d'environnement
 mongodb_uri = os.getenv('MONGODB_URI')
 
+if mongodb_uri is None:
+    print("Erreur : URI MongoDB non défini dans les variables d'environnement.")
+    exit(1)
+
 # Connexion à MongoDB
 client = MongoClient(mongodb_uri)
 db = client['crawler_db']
@@ -23,7 +27,7 @@ except Exception as e:
     print(f"Erreur de connexion à MongoDB : {e}")
     exit(1)
 
-    
+
 # Fonction pour récupérer des URLs dynamiques en fonction du thème
 def get_dynamic_urls(theme):
     search_url = f"https://www.bing.com/news/search?q={urllib.parse.quote(theme)}"
