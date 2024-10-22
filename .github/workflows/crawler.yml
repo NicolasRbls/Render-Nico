@@ -1,6 +1,9 @@
 name: Run Crawler Every Minute
 
 on:
+  push:
+    branches:
+      - main  # ou autre branche de ton choix
   schedule:
     - cron: '*/1 * * * *'  # Cette ligne permet d'exécuter le workflow toutes les minutes
 
