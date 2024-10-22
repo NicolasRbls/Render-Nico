@@ -74,6 +74,29 @@ def crawl_with_theme(theme, depth):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
     }
 
+    to_crawl = get_dynamic_urls(theme)
+    crawled = set()
+    depth_count = 0
+
+    while to_crawl and depth_count < depth:
+        url = to_crawl.pop()
+        if url not in crawled:
+            try:
+                print(f"Exploring: {url}")
+                links = get_specific_links(url)
+                to_crawl.update(links - crawled)
+                crawled.add(url)
+                time.sleep(1)
+
+            except Exception as e:
+                print(f"Erreur lors de l'exploration de l'URL {url}: {e}")
+                continue  # Continue même si une erreur se produit
+
+        depth_count += 1
+
+    print(f"Exploration terminée : {len(crawled)} pages explorées.")
+
+
     def get_specific_links(url):
         try:
             response = requests.get(url, headers=headers)
@@ -95,6 +118,7 @@ def crawl_with_theme(theme, depth):
                 # Enregistrer dans la base de données
                 save_to_database(url, len(links), word_dict)
 
+            # Ajouter des liens trouvés dans la page
             for a_tag in soup.find_all('a', href=True):
                 link = a_tag['href']
                 full_link = urllib.parse.urljoin(url, link)
@@ -104,7 +128,8 @@ def crawl_with_theme(theme, depth):
 
         except requests.RequestException as e:
             print(f"Erreur lors de la récupération de la page {url}: {e}")
-            return set()
+            return set()  # Retourne un ensemble vide si l'URL est inaccessible
+
 
     def clean_text(text):
         text = re.sub(r'\W+', ' ', text)
