@@ -3,7 +3,7 @@ name: Run Crawler Every Minute
 on:
   push:
     branches:
-      - main  # ou autre branche de ton choix
+      - main
   schedule:
     - cron: '*/1 * * * *'  # Cette ligne permet d'exécuter le workflow toutes les minutes
 
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'  # Utiliser Python 3.x
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
@@ -27,3 +27,5 @@ jobs:
 
       - name: Run crawler
         run: python crawler.py
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}  # Utiliser le secret ici
