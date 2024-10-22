@@ -63,6 +63,7 @@ def save_to_database(url, num_links, word_dict):
     try:
         collection.insert_one(data)
         print(f"Résultats insérés dans MongoDB pour {url}")
+        print(f"Données insérées : {data}")  # Ajouter ceci pour afficher les données insérées
     except Exception as e:
         print(f"Erreur lors de l'insertion dans MongoDB : {e}")
 
